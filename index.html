@@ -10,99 +10,109 @@
         :root {
             --accent: #90afc5;
             --bg: #050505;
-            --card-bg: rgba(20, 20, 20, 0.8);
+            --card-bg: rgba(15, 15, 15, 0.9);
         }
 
+        /* Исправляем фон, чтобы не было квадратов */
         body, html {
-            margin: 0; padding: 0; min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh; /* Растягиваем на всю высоту */
             font-family: 'Exo 2', sans-serif;
             background-color: var(--bg);
+            /* Градиент теперь покрывает ВЕСЬ экран без разрывов */
+            background-image: radial-gradient(circle at center, #1a1c22 0%, #050505 100%);
+            background-attachment: fixed; 
             color: #d1d1d1;
-            display: flex; justify-content: center; align-items: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow-x: hidden;
         }
 
-        /* Анимированный фон */
-        .fog-container {
-            position: fixed; width: 100%; height: 100%; top: 0; left: 0;
-            z-index: -1; background: radial-gradient(circle at center, #1a1c22 0%, #050505 100%);
-        }
+        /* Эффект тумана на весь экран */
         .fog-layer {
-            position: absolute; width: 200%; height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
             background: url('https://raw.githubusercontent.com/gist/PavelDoGreat/6748434/raw/2660233481222479e00ec9a4197e44a49646b5a3/fog.png');
-            background-size: 50% 100%; opacity: 0.15;
-            animation: fogMove 60s linear infinite;
+            background-size: 50% 100%;
+            opacity: 0.1;
+            z-index: -1;
+            animation: fogMove 80s linear infinite;
+            pointer-events: none;
         }
         @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+        /* Делаем менюшку БОЛЬШЕ */
         .container {
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(144, 175, 197, 0.2);
-            border-radius: 25px;
-            padding: 40px;
-            width: 90%; max-width: 450px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            border-radius: 20px;
+            padding: 60px; /* Увеличили внутренние отступы */
+            width: 95%;
+            max-width: 650px; /* Увеличили максимальную ширину */
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
             text-align: center;
-            animation: fadeIn 0.8s ease-out;
+            box-sizing: border-box;
+            margin: 20px 0; /* Чтобы не прилипало к краям на мобилках */
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        h1 { font-family: 'Play', sans-serif; font-size: 3.5em; margin: 0; letter-spacing: 10px; color: #fff; }
+        .divider { height: 2px; width: 80px; background: var(--accent); margin: 20px auto 40px; }
 
-        h1 { font-family: 'Play', sans-serif; font-size: 2.5em; margin: 0; letter-spacing: 5px; color: #fff; }
-        .divider { height: 2px; width: 50px; background: var(--accent); margin: 15px auto 30px; }
-
-        .form-group { text-align: left; margin-bottom: 18px; }
-        label { display: block; font-size: 0.7em; color: #777; margin-bottom: 6px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        .form-group { text-align: left; margin-bottom: 25px; }
+        label { display: block; font-size: 0.85em; color: #888; margin-bottom: 10px; text-transform: uppercase; font-weight: bold; letter-spacing: 1.5px; }
         
         input, textarea {
-            width: 100%; padding: 12px;
-            background: rgba(0, 0, 0, 0.5);
+            width: 100%; padding: 18px;
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px; color: #fff;
-            font-family: inherit; font-size: 0.95em;
+            border-radius: 12px; color: #fff;
+            font-family: inherit; font-size: 1.1em;
             box-sizing: border-box; transition: 0.3s;
         }
         input:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(144, 175, 197, 0.05); }
 
-        /* --- ЭСТЕТИЧНАЯ ЗОНА ЗАГРУЗКИ --- */
+        /* Зона загрузки скриншота */
         .drop-zone {
-            width: 100%; height: 120px;
-            border: 1px dashed rgba(144, 175, 197, 0.3);
-            border-radius: 12px;
+            width: 100%; height: 160px; /* Сделали выше */
+            border: 2px dashed rgba(144, 175, 197, 0.3);
+            border-radius: 15px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.3s;
-            background: rgba(0, 0, 0, 0.2);
-            color: #777;
+            background: rgba(0, 0, 0, 0.3);
+            color: #888;
         }
-        .drop-zone:hover, .drop-zone--over {
-            background: rgba(144, 175, 197, 0.05);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        .drop-zone__input { display: none; }
-        .drop-zone__icon { font-size: 24px; margin-bottom: 8px; opacity: 0.7; }
-        .drop-zone__text { font-size: 0.85em; text-align: center; line-height: 1.4; }
-        .drop-zone__thumb { font-size: 0.8em; color: var(--accent); font-weight: bold; margin-top: 5px; }
+        .drop-zone:hover { border-color: var(--accent); color: var(--accent); background: rgba(144, 175, 197, 0.05); }
+        .drop-zone__icon { font-size: 35px; margin-bottom: 10px; }
+        .drop-zone__text { font-size: 1em; }
+        .drop-zone__thumb { font-size: 0.9em; color: var(--accent); margin-top: 10px; font-weight: bold; }
 
+        /* Кнопка "Отправить" */
         .btn-main {
-            width: 100%; padding: 16px;
+            width: 100%; padding: 20px;
             background: var(--accent); color: #000;
-            border: none; border-radius: 12px;
-            font-weight: bold; font-size: 1em;
+            border: none; border-radius: 15px;
+            font-weight: bold; font-size: 1.2em;
             text-transform: uppercase; cursor: pointer;
-            transition: 0.4s; margin-top: 10px;
+            transition: 0.4s; margin-top: 20px;
+            letter-spacing: 2px;
         }
-        .btn-main:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(144, 175, 197, 0.2); }
+        .btn-main:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(144, 175, 197, 0.3); }
 
-        #status { margin-top: 15px; font-size: 0.85em; }
+        #status { margin-top: 20px; font-size: 1em; font-weight: bold; }
         .success { color: #4ade80; }
         .error { color: #f87171; }
     </style>
 </head>
 <body>
 
-    <div class="fog-container"><div class="fog-layer"></div></div>
+    <div class="fog-layer"></div>
 
     <div class="container">
         <h1>RASTESS</h1>
@@ -115,56 +125,42 @@
 
         <div class="form-group">
             <label>Суть проблемы</label>
-            <textarea id="description" rows="3" placeholder="Опишите баг..."></textarea>
+            <textarea id="description" rows="4" placeholder="Опишите баг..."></textarea>
         </div>
 
         <div class="form-group">
             <label>Визуальные данные</label>
             <div class="drop-zone" id="drop-zone">
                 <i class="far fa-images drop-zone__icon"></i>
-                <span class="drop-zone__text">Перетащите скриншот сюда<br><small>или нажмите для выбора файла</small></span>
-                <input type="file" id="screenshot" class="drop-zone__input" accept="image/*">
+                <span class="drop-zone__text">Перетащите скриншот сюда или нажмите</span>
+                <input type="file" id="screenshot" style="display:none" accept="image/*">
                 <div id="file-name" class="drop-zone__thumb"></div>
             </div>
         </div>
 
-        <button class="btn-main" id="submitBtn" onclick="sendReport()">Передать данные</button>
+        <button class="btn-main" id="submitBtn" onclick="sendReport()">Отправить</button>
         <div id="status"></div>
     </div>
 
 <script>
-    // Логика Drag and Drop
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('screenshot');
     const fileNameDisplay = document.getElementById('file-name');
 
     dropZone.addEventListener('click', () => fileInput.click());
-
     fileInput.addEventListener('change', () => {
-        if (fileInput.files.length) updateThumbnail(fileInput.files[0]);
+        if (fileInput.files.length) fileNameDisplay.textContent = `Выбрано: ${fileInput.files[0].name}`;
     });
 
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('drop-zone--over');
-    });
-
-    ['dragleave', 'dragend'].forEach(type => {
-        dropZone.addEventListener(type, () => dropZone.classList.remove('drop-zone--over'));
-    });
-
+    // Drag and drop
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = "#90afc5"; });
+    dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = "rgba(144, 175, 197, 0.3)"; });
     dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
-        if (e.dataTransfer.files.length) {
-            fileInput.files = e.dataTransfer.files;
-            updateThumbnail(e.dataTransfer.files[0]);
-        }
-        dropZone.classList.remove('drop-zone--over');
+        fileInput.files = e.dataTransfer.files;
+        if (fileInput.files.length) fileNameDisplay.textContent = `Выбрано: ${fileInput.files[0].name}`;
+        dropZone.style.borderColor = "rgba(144, 175, 197, 0.3)";
     });
-
-    function updateThumbnail(file) {
-        fileNameDisplay.textContent = `Выбрано: ${file.name}`;
-    }
 
     async function sendReport() {
         const WEBHOOK_URL = "https://discord.com/api/webhooks/1541545132376203285/DoMDk6qcjb4-1qxweF_Z4WnZT8PIXmBxjhdtX4yYh0QHx1KF9q4Lpf6_5eJ0TzfhnKwX";
@@ -174,12 +170,12 @@
         const btn = document.getElementById('submitBtn');
 
         if (!description) {
-            status.innerHTML = "<span class='error'>Заполните описание!</span>";
+            status.innerHTML = "<span class='error'>Ошибка: Опишите проблему</span>";
             return;
         }
 
         btn.disabled = true;
-        btn.innerText = "ОТПРАВКА...";
+        btn.innerText = "Отправка...";
 
         const formData = new FormData();
         const message = {
@@ -190,29 +186,27 @@
                     { name: "СУБЪЕКТ", value: username, inline: true },
                     { name: "ОТЧЕТ", value: "```" + description + "```" }
                 ],
-                footer: { text: "RASTESS | Техподдержка. Удалите это сообщение после исправления." },
+                footer: { text: "RASTESS Support" },
                 timestamp: new Date()
             }]
         };
 
         formData.append("payload_json", JSON.stringify(message));
-        if (fileInput.files.length > 0) {
-            formData.append("file", fileInput.files[0]);
-        }
+        if (fileInput.files.length > 0) formData.append("file", fileInput.files[0]);
 
         try {
             const response = await fetch(WEBHOOK_URL, { method: "POST", body: formData });
             if (response.ok) {
-                status.innerHTML = "<span class='success'>Данные переданы.</span>";
+                status.innerHTML = "<span class='success'>Отчет успешно отправлен!</span>";
                 document.getElementById('description').value = "";
                 fileInput.value = "";
                 fileNameDisplay.textContent = "";
             } else { throw new Error(); }
         } catch (e) {
-            status.innerHTML = "<span class='error'>Ошибка сети.</span>";
+            status.innerHTML = "<span class='error'>Ошибка сети. Попробуйте позже.</span>";
         } finally {
             btn.disabled = false;
-            btn.innerText = "ПЕРЕДАТЬ ДАННЫЕ";
+            btn.innerText = "Отправить";
         }
     }
 </script>
