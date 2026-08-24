@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RASTESS | Техническая поддержка</title>
-    <!-- Иконки и шрифты -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --accent: #90afc5;
             --bg: #050505;
-            --card-bg: rgba(20, 20, 20, 0.75);
-            --discord: #5865F2;
+            --card-bg: rgba(20, 20, 20, 0.8);
         }
 
         body, html {
@@ -24,230 +22,199 @@
             overflow-x: hidden;
         }
 
-        /* --- Анимированный туман --- */
+        /* Анимированный фон */
         .fog-container {
             position: fixed; width: 100%; height: 100%; top: 0; left: 0;
-            z-index: -1; overflow: hidden;
-            background: radial-gradient(circle at center, #1a1c22 0%, #050505 100%);
+            z-index: -1; background: radial-gradient(circle at center, #1a1c22 0%, #050505 100%);
         }
         .fog-layer {
             position: absolute; width: 200%; height: 100%;
             background: url('https://raw.githubusercontent.com/gist/PavelDoGreat/6748434/raw/2660233481222479e00ec9a4197e44a49646b5a3/fog.png');
-            background-size: 50% 100%;
-            opacity: 0.15;
+            background-size: 50% 100%; opacity: 0.15;
             animation: fogMove 60s linear infinite;
         }
-        @keyframes fogMove {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-        }
+        @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* --- Основная карточка (Стеклянный стиль) --- */
         .container {
             background: var(--card-bg);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(144, 175, 197, 0.2);
-            border-radius: 30px;
-            padding: 50px 40px;
-            width: 90%; max-width: 480px;
+            border-radius: 25px;
+            padding: 40px;
+            width: 90%; max-width: 450px;
             box-shadow: 0 40px 100px rgba(0,0,0,0.8);
             text-align: center;
-            animation: scaleIn 0.8s ease-out;
-        }
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            animation: fadeIn 0.8s ease-out;
         }
 
-        /* --- Заголовок --- */
-        .game-quote {
-            font-size: 0.85em; color: var(--accent);
-            text-transform: uppercase; letter-spacing: 2px;
-            margin-bottom: 10px; opacity: 0.8;
-            font-family: 'Play', sans-serif;
-        }
-        h1 {
-            font-family: 'Play', sans-serif;
-            font-size: 3em; margin: 0; letter-spacing: 8px;
-            color: #fff; text-shadow: 0 0 20px rgba(144, 175, 197, 0.4);
-            font-weight: 700;
-        }
-        .divider {
-            height: 2px; width: 60px; background: var(--accent);
-            margin: 20px auto 35px; border-radius: 2px;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Форма --- */
-        .form-group { text-align: left; margin-bottom: 20px; }
-        label { 
-            display: block; font-size: 0.75em; color: #777; 
-            margin-bottom: 8px; text-transform: uppercase; font-weight: bold;
-        }
+        h1 { font-family: 'Play', sans-serif; font-size: 2.5em; margin: 0; letter-spacing: 5px; color: #fff; }
+        .divider { height: 2px; width: 50px; background: var(--accent); margin: 15px auto 30px; }
+
+        .form-group { text-align: left; margin-bottom: 18px; }
+        label { display: block; font-size: 0.7em; color: #777; margin-bottom: 6px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        
         input, textarea {
-            width: 100%; padding: 14px;
-            background: rgba(0, 0, 0, 0.4);
+            width: 100%; padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px; color: #fff;
-            font-family: inherit; font-size: 1em;
+            border-radius: 10px; color: #fff;
+            font-family: inherit; font-size: 0.95em;
             box-sizing: border-box; transition: 0.3s;
         }
-        input:focus, textarea:focus {
-            outline: none; border-color: var(--accent);
-            background: rgba(144, 175, 197, 0.05);
-            box-shadow: 0 0 15px rgba(144, 175, 197, 0.1);
-        }
+        input:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(144, 175, 197, 0.05); }
 
-        /* --- Загрузка файла --- */
-        input[type="file"] {
+        /* --- ЭСТЕТИЧНАЯ ЗОНА ЗАГРУЗКИ --- */
+        .drop-zone {
+            width: 100%; height: 120px;
             border: 1px dashed rgba(144, 175, 197, 0.3);
-            background: none; font-size: 0.9em; cursor: pointer;
+            border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s;
+            background: rgba(0, 0, 0, 0.2);
+            color: #777;
         }
+        .drop-zone:hover, .drop-zone--over {
+            background: rgba(144, 175, 197, 0.05);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .drop-zone__input { display: none; }
+        .drop-zone__icon { font-size: 24px; margin-bottom: 8px; opacity: 0.7; }
+        .drop-zone__text { font-size: 0.85em; text-align: center; line-height: 1.4; }
+        .drop-zone__thumb { font-size: 0.8em; color: var(--accent); font-weight: bold; margin-top: 5px; }
 
-        /* --- Кнопки --- */
         .btn-main {
-            width: 100%; padding: 18px;
+            width: 100%; padding: 16px;
             background: var(--accent); color: #000;
-            border: none; border-radius: 14px;
-            font-weight: bold; font-size: 1.1em;
+            border: none; border-radius: 12px;
+            font-weight: bold; font-size: 1em;
             text-transform: uppercase; cursor: pointer;
             transition: 0.4s; margin-top: 10px;
         }
-        .btn-main:hover {
-            background: #fff; transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(144, 175, 197, 0.3);
-        }
+        .btn-main:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(144, 175, 197, 0.2); }
 
-        .btn-discord {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            margin-top: 20px; padding: 12px;
-            background: rgba(88, 101, 242, 0.1);
-            border: 1px solid rgba(88, 101, 242, 0.3);
-            border-radius: 12px; color: var(--discord);
-            text-decoration: none; font-weight: 600; transition: 0.3s;
-        }
-        .btn-discord:hover {
-            background: var(--discord); color: #fff;
-        }
-
-        /* --- Сообщения --- */
-        #status { margin-top: 20px; font-size: 0.9em; }
+        #status { margin-top: 15px; font-size: 0.85em; }
         .success { color: #4ade80; }
         .error { color: #f87171; }
-
-        .loader {
-            display: none; width: 24px; height: 24px;
-            border: 3px solid rgba(144, 175, 197, 0.2);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%; animation: spin 1s linear infinite;
-            margin: 15px auto;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="fog-container">
-        <div class="fog-layer"></div>
-    </div>
+    <div class="fog-container"><div class="fog-layer"></div></div>
 
     <div class="container">
-        <div class="game-quote">"Правда скрыта в дыму"</div>
         <h1>RASTESS</h1>
         <div class="divider"></div>
         
-        <div id="reportForm">
-            <div class="form-group">
-                <label>Объект (Ваш ник)</label>
-                <input type="text" id="username" placeholder="Shintrix...">
-            </div>
-
-            <div class="form-group">
-                <label>Суть проблемы</label>
-                <textarea id="description" rows="4" placeholder="Опишите баг максимально подробно..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Визуальные данные (Скриншот)</label>
-                <input type="file" id="screenshot" accept="image/*">
-            </div>
-
-            <button class="btn-main" id="submitBtn" onclick="sendReport()">
-                Передать данные
-            </button>
-            
-            <div class="loader" id="spinner"></div>
-            <div id="status"></div>
+        <div class="form-group">
+            <label>Объект (Ваш ник)</label>
+            <input type="text" id="username" placeholder="Введите имя..." required>
         </div>
 
-        <a href="https://discord.gg/jzzcdWeJVD" target="_blank" class="btn-discord">
-            <i class="fab fa-discord"></i> Наш Discord
-        </a>
+        <div class="form-group">
+            <label>Суть проблемы</label>
+            <textarea id="description" rows="3" placeholder="Опишите баг..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Визуальные данные</label>
+            <div class="drop-zone" id="drop-zone">
+                <i class="far fa-images drop-zone__icon"></i>
+                <span class="drop-zone__text">Перетащите скриншот сюда<br><small>или нажмите для выбора файла</small></span>
+                <input type="file" id="screenshot" class="drop-zone__input" accept="image/*">
+                <div id="file-name" class="drop-zone__thumb"></div>
+            </div>
+        </div>
+
+        <button class="btn-main" id="submitBtn" onclick="sendReport()">Передать данные</button>
+        <div id="status"></div>
     </div>
 
 <script>
+    // Логика Drag and Drop
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('screenshot');
+    const fileNameDisplay = document.getElementById('file-name');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) updateThumbnail(fileInput.files[0]);
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drop-zone--over');
+    });
+
+    ['dragleave', 'dragend'].forEach(type => {
+        dropZone.addEventListener(type, () => dropZone.classList.remove('drop-zone--over'));
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            updateThumbnail(e.dataTransfer.files[0]);
+        }
+        dropZone.classList.remove('drop-zone--over');
+    });
+
+    function updateThumbnail(file) {
+        fileNameDisplay.textContent = `Выбрано: ${file.name}`;
+    }
+
     async function sendReport() {
-        // Твой личный Webhook URL
         const WEBHOOK_URL = "https://discord.com/api/webhooks/1541545132376203285/DoMDk6qcjb4-1qxweF_Z4WnZT8PIXmBxjhdtX4yYh0QHx1KF9q4Lpf6_5eJ0TzfhnKwX";
-        
         const username = document.getElementById('username').value || "Аноним";
         const description = document.getElementById('description').value;
-        const fileInput = document.getElementById('screenshot');
         const status = document.getElementById('status');
         const btn = document.getElementById('submitBtn');
-        const spinner = document.getElementById('spinner');
 
         if (!description) {
-            status.innerHTML = "<span class='error'>Ошибка: Описание не заполнено.</span>";
+            status.innerHTML = "<span class='error'>Заполните описание!</span>";
             return;
         }
 
-        btn.style.display = "none";
-        spinner.style.display = "block";
-        status.innerText = "";
+        btn.disabled = true;
+        btn.innerText = "ОТПРАВКА...";
 
         const formData = new FormData();
-        
         const message = {
             embeds: [{
                 title: "🚨 Зафиксирована ошибка",
-                color: 9482181, 
+                color: 9482181,
                 fields: [
                     { name: "СУБЪЕКТ", value: username, inline: true },
                     { name: "ОТЧЕТ", value: "```" + description + "```" }
                 ],
-                footer: { text: "RASTESS | Поддержка" },
+                footer: { text: "RASTESS | Техподдержка. Удалите это сообщение после исправления." },
                 timestamp: new Date()
             }]
         };
 
         formData.append("payload_json", JSON.stringify(message));
-
         if (fileInput.files.length > 0) {
             formData.append("file", fileInput.files[0]);
         }
 
         try {
-            const response = await fetch(WEBHOOK_URL, {
-                method: "POST",
-                body: formData
-            });
-
+            const response = await fetch(WEBHOOK_URL, { method: "POST", body: formData });
             if (response.ok) {
-                status.innerHTML = "<span class='success'>Данные успешно переданы в Discord.</span>";
+                status.innerHTML = "<span class='success'>Данные переданы.</span>";
                 document.getElementById('description').value = "";
                 fileInput.value = "";
-            } else {
-                throw new Error();
-            }
+                fileNameDisplay.textContent = "";
+            } else { throw new Error(); }
         } catch (e) {
-            status.innerHTML = "<span class='error'>Ошибка соединения. Попробуйте еще раз.</span>";
+            status.innerHTML = "<span class='error'>Ошибка сети.</span>";
         } finally {
-            btn.style.display = "block";
-            spinner.style.display = "none";
+            btn.disabled = false;
+            btn.innerText = "ПЕРЕДАТЬ ДАННЫЕ";
         }
     }
 </script>
-
 </body>
 </html>
