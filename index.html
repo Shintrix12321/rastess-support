@@ -10,18 +10,16 @@
         :root {
             --accent: #90afc5;
             --bg: #050505;
-            --card-bg: rgba(15, 15, 15, 0.9);
+            --card-bg: rgba(15, 15, 15, 0.95);
         }
 
-        /* Исправляем фон, чтобы не было квадратов */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            min-height: 100vh; /* Растягиваем на всю высоту */
+            min-height: 100vh;
             font-family: 'Exo 2', sans-serif;
             background-color: var(--bg);
-            /* Градиент теперь покрывает ВЕСЬ экран без разрывов */
             background-image: radial-gradient(circle at center, #1a1c22 0%, #050505 100%);
             background-attachment: fixed; 
             color: #d1d1d1;
@@ -31,13 +29,10 @@
             overflow-x: hidden;
         }
 
-        /* Эффект тумана на весь экран */
+        /* Эффект тумана */
         .fog-layer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
+            top: 0; left: 0; width: 200%; height: 100%;
             background: url('https://raw.githubusercontent.com/gist/PavelDoGreat/6748434/raw/2660233481222479e00ec9a4197e44a49646b5a3/fog.png');
             background-size: 50% 100%;
             opacity: 0.1;
@@ -47,65 +42,78 @@
         }
         @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* Делаем менюшку БОЛЬШЕ */
+        /* Контейнер (Адаптивный) */
         .container {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(144, 175, 197, 0.2);
             border-radius: 20px;
-            padding: 60px; /* Увеличили внутренние отступы */
-            width: 95%;
-            max-width: 650px; /* Увеличили максимальную ширину */
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
             box-shadow: 0 50px 100px rgba(0,0,0,0.9);
             text-align: center;
             box-sizing: border-box;
-            margin: 20px 0; /* Чтобы не прилипало к краям на мобилках */
+            margin: 20px;
+            transition: all 0.3s ease;
         }
 
-        h1 { font-family: 'Play', sans-serif; font-size: 3.5em; margin: 0; letter-spacing: 10px; color: #fff; }
-        .divider { height: 2px; width: 80px; background: var(--accent); margin: 20px auto 40px; }
+        /* Настройка для мобильных устройств */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 15px;
+            }
+            h1 { font-size: 2.2em !important; }
+            .divider { margin: 15px auto 25px !important; }
+            .drop-zone { height: 120px !important; }
+            .btn-main { font-size: 1em !important; padding: 15px !important; }
+        }
 
-        .form-group { text-align: left; margin-bottom: 25px; }
-        label { display: block; font-size: 0.85em; color: #888; margin-bottom: 10px; text-transform: uppercase; font-weight: bold; letter-spacing: 1.5px; }
+        h1 { font-family: 'Play', sans-serif; font-size: 3.2em; margin: 0; letter-spacing: 8px; color: #fff; }
+        .divider { height: 2px; width: 60px; background: var(--accent); margin: 20px auto 35px; }
+
+        .form-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; font-size: 0.8em; color: #888; margin-bottom: 8px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
         
         input, textarea {
-            width: 100%; padding: 18px;
+            width: 100%; padding: 15px;
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px; color: #fff;
-            font-family: inherit; font-size: 1.1em;
+            border-radius: 10px; color: #fff;
+            font-family: inherit; font-size: 1em;
             box-sizing: border-box; transition: 0.3s;
         }
         input:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(144, 175, 197, 0.05); }
 
-        /* Зона загрузки скриншота */
         .drop-zone {
-            width: 100%; height: 160px; /* Сделали выше */
+            width: 100%; height: 140px;
             border: 2px dashed rgba(144, 175, 197, 0.3);
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.3s;
             background: rgba(0, 0, 0, 0.3);
             color: #888;
+            padding: 10px;
+            box-sizing: border-box;
         }
         .drop-zone:hover { border-color: var(--accent); color: var(--accent); background: rgba(144, 175, 197, 0.05); }
-        .drop-zone__icon { font-size: 35px; margin-bottom: 10px; }
-        .drop-zone__text { font-size: 1em; }
-        .drop-zone__thumb { font-size: 0.9em; color: var(--accent); margin-top: 10px; font-weight: bold; }
+        .drop-zone__icon { font-size: 30px; margin-bottom: 8px; }
+        .drop-zone__text { font-size: 0.9em; }
+        .drop-zone__thumb { font-size: 0.85em; color: var(--accent); margin-top: 5px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; width: 100%; white-space: nowrap; }
 
-        /* Кнопка "Отправить" */
         .btn-main {
-            width: 100%; padding: 20px;
+            width: 100%; padding: 18px;
             background: var(--accent); color: #000;
-            border: none; border-radius: 15px;
-            font-weight: bold; font-size: 1.2em;
+            border: none; border-radius: 12px;
+            font-weight: bold; font-size: 1.1em;
             text-transform: uppercase; cursor: pointer;
-            transition: 0.4s; margin-top: 20px;
+            transition: 0.4s; margin-top: 15px;
             letter-spacing: 2px;
         }
-        .btn-main:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(144, 175, 197, 0.3); }
+        .btn-main:hover:not(:disabled) { background: #fff; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(144, 175, 197, 0.3); }
+        .btn-main:disabled { background: #444; color: #888; cursor: not-allowed; }
 
-        #status { margin-top: 20px; font-size: 1em; font-weight: bold; }
+        #status { margin-top: 15px; font-size: 0.9em; font-weight: bold; min-height: 1.2em; }
         .success { color: #4ade80; }
         .error { color: #f87171; }
     </style>
@@ -119,20 +127,20 @@
         <div class="divider"></div>
         
         <div class="form-group">
-            <label>Объект (Ваш ник)</label>
-            <input type="text" id="username" placeholder="Введите имя..." required>
+            <label>Ваш идентификатор (Ник)</label>
+            <input type="text" id="username" placeholder="Введите имя..." maxlength="32">
         </div>
 
         <div class="form-group">
-            <label>Суть проблемы</label>
-            <textarea id="description" rows="4" placeholder="Опишите баг..."></textarea>
+            <label>Описание обнаруженной ошибки</label>
+            <textarea id="description" rows="4" placeholder="Опишите баг максимально подробно..." maxlength="1000"></textarea>
         </div>
 
         <div class="form-group">
-            <label>Визуальные данные</label>
+            <label>Снимок экрана (Визуальные данные)</label>
             <div class="drop-zone" id="drop-zone">
                 <i class="far fa-images drop-zone__icon"></i>
-                <span class="drop-zone__text">Перетащите скриншот сюда или нажмите</span>
+                <span class="drop-zone__text">Перетащите файл или нажмите</span>
                 <input type="file" id="screenshot" style="display:none" accept="image/*">
                 <div id="file-name" class="drop-zone__thumb"></div>
             </div>
@@ -146,13 +154,17 @@
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('screenshot');
     const fileNameDisplay = document.getElementById('file-name');
+    const status = document.getElementById('status');
+    const btn = document.getElementById('submitBtn');
+
+    // Список запрещенных слов (добавьте свои)
+    const bannedWords = ["спам", "реклама", "негр", "пидор", "хер", "сука", "бля", "оскорбление", "хуй", "говно", "еблан"];
 
     dropZone.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length) fileNameDisplay.textContent = `Выбрано: ${fileInput.files[0].name}`;
     });
 
-    // Drag and drop
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = "#90afc5"; });
     dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = "rgba(144, 175, 197, 0.3)"; });
     dropZone.addEventListener('drop', (e) => {
@@ -164,18 +176,38 @@
 
     async function sendReport() {
         const WEBHOOK_URL = "https://discord.com/api/webhooks/1541545132376203285/DoMDk6qcjb4-1qxweF_Z4WnZT8PIXmBxjhdtX4yYh0QHx1KF9q4Lpf6_5eJ0TzfhnKwX";
-        const username = document.getElementById('username').value || "Аноним";
-        const description = document.getElementById('description').value;
-        const status = document.getElementById('status');
-        const btn = document.getElementById('submitBtn');
+        
+        const rawUsername = document.getElementById('username').value.trim();
+        const rawDescription = document.getElementById('description').value.trim();
+        const username = rawUsername || "Аноним";
 
-        if (!description) {
-            status.innerHTML = "<span class='error'>Ошибка: Опишите проблему</span>";
+        // 1. ОГРАНИЧЕНИЕ ПО ВРЕМЕНИ (1 минута)
+        const lastSent = localStorage.getItem('lastReportSent');
+        const now = Date.now();
+        if (lastSent && (now - lastSent < 60000)) {
+            const waitTime = Math.ceil((60000 - (now - lastSent)) / 1000);
+            status.innerHTML = `<span class='error'>Подождите ${waitTime} сек. перед повторной отправкой.</span>`;
             return;
         }
 
+        // 2. ПРОВЕРКА НА ПУСТЫЕ ПОЛЯ
+        if (!rawDescription) {
+            status.innerHTML = "<span class='error'>Ошибка: Опишите проблему.</span>";
+            return;
+        }
+
+        // 3. ПРОВЕРКА НА ЗАПРЕЩЕННЫЙ КОНТЕНТ (Фильтр ИИ/Слов)
+        const fullText = (username + " " + rawDescription).toLowerCase();
+        const hasBannedContent = bannedWords.some(word => fullText.includes(word));
+        
+        if (hasBannedContent) {
+            status.innerHTML = "<span class='error'>Обнаружен недопустимый контент. Репорт заблокирован.</span>";
+            return;
+        }
+
+        // Подготовка отправки
         btn.disabled = true;
-        btn.innerText = "Отправка...";
+        btn.innerText = "ПРОВЕРКА...";
 
         const formData = new FormData();
         const message = {
@@ -184,9 +216,9 @@
                 color: 9482181,
                 fields: [
                     { name: "СУБЪЕКТ", value: username, inline: true },
-                    { name: "ОТЧЕТ", value: "```" + description + "```" }
+                    { name: "ОТЧЕТ", value: "```" + rawDescription + "```" }
                 ],
-                footer: { text: "RASTESS Support" },
+                footer: { text: "RASTESS Security System" },
                 timestamp: new Date()
             }]
         };
@@ -197,7 +229,8 @@
         try {
             const response = await fetch(WEBHOOK_URL, { method: "POST", body: formData });
             if (response.ok) {
-                status.innerHTML = "<span class='success'>Отчет успешно отправлен!</span>";
+                status.innerHTML = "<span class='success'>Данные переданы успешно.</span>";
+                localStorage.setItem('lastReportSent', Date.now()); // Сохраняем время
                 document.getElementById('description').value = "";
                 fileInput.value = "";
                 fileNameDisplay.textContent = "";
