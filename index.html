@@ -71,27 +71,61 @@
         }
         .drop-zone:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* Чекбокс безопасности */
-        .safety-check {
-            display: flex; align-items: flex-start; gap: 10px;
-            text-align: left; font-size: 0.85em; color: #777; margin: 15px 0;
-            background: rgba(248, 113, 113, 0.05); padding: 10px; border-radius: 8px;
+        /* --- КРАСИВАЯ ГАЛОЧКА (CHECKBOX) --- */
+        .safety-wrapper {
+            display: flex; align-items: center; cursor: pointer;
+            text-align: left; gap: 12px; margin: 20px 0;
+            background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 12px;
+            transition: 0.3s;
         }
-        .safety-check input { width: auto; margin-top: 3px; cursor: pointer; }
+        .safety-wrapper:hover { background: rgba(255, 255, 255, 0.05); }
 
+        .safety-wrapper input { display: none; } /* Скрываем стандартный чекбокс */
+
+        .custom-checkbox {
+            width: 22px; height: 22px; border: 2px solid #444;
+            border-radius: 6px; position: relative; flex-shrink: 0;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .safety-wrapper input:checked + .custom-checkbox {
+            background: var(--accent); border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(144, 175, 197, 0.5);
+        }
+
+        .custom-checkbox::after {
+            content: "\f00c"; font-family: "Font Awesome 5 Free"; font-weight: 900;
+            position: absolute; color: #000; font-size: 14px;
+            top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .safety-wrapper input:checked + .custom-checkbox::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .safety-text { font-size: 0.9em; color: #aaa; user-select: none; line-height: 1.4; }
+
+        /* --- КНОПКА ОТПРАВИТЬ (ИНВЕРСИЯ И СВЕЧЕНИЕ) --- */
         .btn-main {
             width: 100%; padding: 18px;
             background: var(--accent); color: #000;
             border: none; border-radius: 12px;
-            font-weight: bold; font-size: 1.1em;
-            text-transform: uppercase; cursor: pointer; transition: 0.4s;
+            font-weight: bold; font-size: 1.2em;
+            text-transform: uppercase; cursor: pointer; transition: all 0.4s ease;
+            letter-spacing: 2px;
         }
-        .btn-main:hover:not(:disabled) { background: #fff; transform: translateY(-3px); }
+        .btn-main:hover:not(:disabled) { 
+            background: #fff; /* Становится белой */
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6); /* Мощное белое свечение */
+        }
         .btn-main:disabled { background: #444; cursor: not-allowed; opacity: 0.6; }
 
         .btn-discord {
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            margin-top: 20px; padding: 12px;
+            margin-top: 25px; padding: 12px;
             background: rgba(88, 101, 242, 0.1);
             border: 1px solid rgba(88, 101, 242, 0.3);
             border-radius: 12px; color: var(--discord);
@@ -113,17 +147,17 @@
         <div class="divider"></div>
         
         <div class="form-group">
-            <label>Ваш ник</label>
+            <label>Ваш идентификатор (Ник)</label>
             <input type="text" id="username" placeholder="Введите имя..." maxlength="32">
         </div>
 
         <div class="form-group">
-            <label>Описание проблемы</label>
+            <label>Описание обнаруженной ошибки</label>
             <textarea id="description" rows="4" placeholder="Что произошло?" maxlength="1000"></textarea>
         </div>
 
         <div class="form-group">
-            <label>Скриншот</label>
+            <label>Снимок экрана</label>
             <div class="drop-zone" id="drop-zone">
                 <i class="far fa-images" style="font-size: 24px; margin-bottom: 5px;"></i>
                 <span id="file-name">Нажмите или перетащите фото</span>
@@ -131,14 +165,16 @@
             </div>
         </div>
 
-        <div class="safety-check">
+        <!-- КРАСИВАЯ ГАЛОЧКА -->
+        <label class="safety-wrapper" for="safety-confirm">
             <input type="checkbox" id="safety-confirm">
-            <label for="safety-confirm" style="text-transform: none; color: #aaa; font-weight: normal; font-size: 0.95em;">
+            <div class="custom-checkbox"></div>
+            <div class="safety-text">
                 Я подтверждаю, что скриншот не содержит запрещенного контента, шок-контента или порнографии.
-            </label>
-        </div>
+            </div>
+        </label>
 
-        <button class="btn-main" id="submitBtn" onclick="sendReport()">Отправить данные</button>
+        <button class="btn-main" id="submitBtn" onclick="sendReport()">Отправить</button>
         <div id="status"></div>
 
         <a href="https://discord.gg/jzzcdWeJVD" target="_blank" class="btn-discord">
@@ -154,7 +190,6 @@
     const btn = document.getElementById('submitBtn');
     const safetyCheck = document.getElementById('safety-confirm');
 
-    // Огромный список плохих слов
     const bannedWords = [
         "хуй", "пизд", "еба", "ебл", "бля", "сук", "гандон", "мудак", "шлюх", "говно", "жоп", "дроч", "порно", "секс", "члено", "пидор", "ниггер", "негр", "хер", "мразь", "ублюд", "трах", "сиськи"
     ];
@@ -170,26 +205,22 @@
         const username = document.getElementById('username').value.trim() || "Аноним";
         const description = document.getElementById('description').value.trim();
 
-        // 1. Ограничение 1 мин
         const lastSent = localStorage.getItem('lastReportSent');
         if (lastSent && (Date.now() - lastSent < 60000)) {
             status.innerHTML = "<span class='error'>Подождите минуту!</span>";
             return;
         }
 
-        // 2. Пустое описание
         if (!description) {
             status.innerHTML = "<span class='error'>Опишите проблему!</span>";
             return;
         }
 
-        // 3. Проверка галочки
         if (!safetyCheck.checked) {
             status.innerHTML = "<span class='error'>Подтвердите безопасность контента!</span>";
             return;
         }
 
-        // 4. Фильтр матов
         const textToCheck = (username + " " + description).toLowerCase();
         if (bannedWords.some(word => textToCheck.includes(word))) {
             status.innerHTML = "<span class='error'>Система заблокировала сообщение за мат/оскорбления.</span>";
@@ -209,7 +240,7 @@
                     { name: "ОПИСАНИЕ", value: "```" + description + "```" },
                     { name: "БЕЗОПАСНОСТЬ", value: "✅ Пользователь подтвердил отсутствие нарушений" }
                 ],
-                footer: { text: "RASTESS Security Node" },
+                footer: { text: "RASTESS Security System" },
                 timestamp: new Date()
             }]
         };
@@ -231,7 +262,7 @@
             status.innerHTML = "<span class='error'>Ошибка сети.</span>";
         } finally {
             btn.disabled = false;
-            btn.innerText = "ОТПРАВИТЬ ДАННЫЕ";
+            btn.innerText = "ОТПРАВИТЬ";
         }
     }
 </script>
