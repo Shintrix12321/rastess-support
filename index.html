@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RASTESS | Поддержка и Сообщество</title>
-    <!-- Иконки FontAwesome -->
+    <title>RASTESS | Технический центр</title>
+    <!-- Иконки -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Основной стиль страницы */
         body {
             background-color: #050505;
             background-image: radial-gradient(circle at 50% 50%, #1a1c22 0%, #050505 100%);
@@ -18,138 +17,244 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            padding: 20px;
         }
 
-        /* Анимация появления контента */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Эффект тумана/текстуры на фоне */
-        .overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-            opacity: 0.15;
-            z-index: -1;
-        }
-
-        /* Главная карточка */
         .container {
             background: rgba(20, 20, 20, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 60px 45px;
-            border-radius: 28px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 24px;
             border: 1px solid rgba(144, 175, 197, 0.15);
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            width: 100%;
+            max-width: 450px;
             text-align: center;
-            max-width: 420px;
-            width: 85%;
-            animation: fadeIn 1.2s ease-out;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
             color: #90afc5;
-            font-size: 2.8em;
-            margin: 0 0 10px 0;
-            letter-spacing: 6px;
+            font-size: 2.2em;
+            letter-spacing: 5px;
             text-transform: uppercase;
+            margin-bottom: 30px;
             font-weight: 300;
-            text-shadow: 0 0 15px rgba(144, 175, 197, 0.3);
         }
 
-        .subtitle {
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75em;
             color: #666;
-            font-size: 0.85em;
-            margin-bottom: 45px;
+            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 1px;
         }
 
-        /* Стили кнопок */
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1em;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #90afc5;
+            background: rgba(15, 15, 15, 0.8);
+        }
+
+        /* Стиль загрузки файла */
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        input[type="file"] {
+            border: 1px dashed #444;
+            padding: 10px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .btn-send {
+            width: 100%;
             padding: 18px;
-            margin-bottom: 18px;
-            text-decoration: none;
-            border-radius: 14px;
-            font-weight: bold;
-            font-size: 1.05em;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* Кнопка GitHub (Ошибки) */
-        .btn-bug {
             background: #90afc5;
-            color: #0a0a0a;
+            color: #050505;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            margin-top: 10px;
         }
-        .btn-bug:hover {
+
+        .btn-send:hover {
             background: #fff;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(144, 175, 197, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(144, 175, 197, 0.3);
         }
 
-        /* Кнопка Discord */
-        .btn-discord {
-            background: #5865F2;
-            color: #ffffff;
-        }
-        .btn-discord:hover {
-            background: #7289da;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(88, 101, 242, 0.4);
+        .btn-send:disabled {
+            background: #444;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        /* Подвал карточки */
-        .footer-info {
-            margin-top: 35px;
-            font-size: 0.8em;
-            color: #444;
-            line-height: 1.6;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 20px;
+        #status {
+            margin-top: 20px;
+            font-size: 0.9em;
+            min-height: 1.2em;
         }
 
-        .footer-info b {
-            color: #777;
+        .success { color: #4ade80; }
+        .error { color: #f87171; }
+
+        .discord-link {
+            margin-top: 30px;
+            display: inline-block;
+            color: #5865F2;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: 0.3s;
         }
 
-        /* Адаптация под телефоны */
-        @media (max-width: 480px) {
-            .container { padding: 40px 25px; }
-            h1 { font-size: 2.2em; }
+        .discord-link:hover { color: #fff; }
+
+        /* Эффект загрузки */
+        .loading-spinner {
+            display: none;
+            margin: 10px auto;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(144, 175, 197, 0.3);
+            border-radius: 50%;
+            border-top-color: #90afc5;
+            animation: spin 1s ease-in-out infinite;
         }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
 
-    <div class="container">
-        <h1>RASTESS</h1>
-        <div class="subtitle">Технический узел</div>
-        
-        <!-- Ссылка на создание Issue в твоем репозитории -->
-        <a href="https://github.com/Shintrix12321/rastess-support/issues/new" target="_blank" class="btn btn-bug">
-            <i class="fas fa-bug"></i> Сообщить о баге
-        </a>
-
-        <!-- Твоя ссылка на Discord -->
-        <a href="https://discord.gg/jzzcdWeJVD" target="_blank" class="btn btn-discord">
-            <i class="fab fa-discord"></i> Наш Discord
-        </a>
-
-        <div class="footer-info">
-            Нашли проблему в тумане? <br>
-            Опишите баг и прикрепите <b>скриншот</b>, <br>
-            просто перетащив его в поле текста на GitHub.
+<div class="container">
+    <h1>Отчет о баге</h1>
+    
+    <div id="reportForm">
+        <div class="form-group">
+            <label>Ваш Ник / Discord</label>
+            <input type="text" id="username" placeholder="Shintrix...">
         </div>
+
+        <div class="form-group">
+            <label>Описание проблемы</label>
+            <textarea id="description" rows="5" placeholder="Опишите, что пошло не так..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Прикрепить скриншот (необязательно)</label>
+            <input type="file" id="screenshot" accept="image/*">
+        </div>
+
+        <button class="btn-send" id="submitBtn" onclick="sendReport()">
+            Отправить отчет
+        </button>
+        
+        <div class="loading-spinner" id="spinner"></div>
+        <div id="status"></div>
     </div>
+
+    <a href="https://discord.gg/jzzcdWeJVD" target="_blank" class="discord-link">
+        <i class="fab fa-discord"></i> Перейти в наш Discord
+    </a>
+</div>
+
+<script>
+    async function sendReport() {
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1541545132376203285/DoMDk6qcjb4-1qxweF_Z4WnZT8PIXmBxjhdtX4yYh0QHx1KF9q4Lpf6_5eJ0TzfhnKwX";
+        
+        const username = document.getElementById('username').value || "Аноним";
+        const description = document.getElementById('description').value;
+        const fileInput = document.getElementById('screenshot');
+        const status = document.getElementById('status');
+        const btn = document.getElementById('submitBtn');
+        const spinner = document.getElementById('spinner');
+
+        if (!description) {
+            status.innerHTML = "<span class='error'>Пожалуйста, опишите проблему</span>";
+            return;
+        }
+
+        // Блокируем кнопку и показываем загрузку
+        btn.disabled = true;
+        spinner.style.display = "block";
+        status.innerText = "";
+
+        const formData = new FormData();
+        
+        // Красивое оформление сообщения для Discord
+        const message = {
+            embeds: [{
+                title: "🚀 Новый баг-репорт",
+                color: 9482181, // Сизый цвет (#90afc5)
+                fields: [
+                    { name: "Отправитель", value: username, inline: true },
+                    { name: "Сообщение", value: description }
+                ],
+                footer: { text: "Rastess Technical Support" },
+                timestamp: new Date()
+            }]
+        };
+
+        formData.append("payload_json", JSON.stringify(message));
+
+        if (fileInput.files.length > 0) {
+            formData.append("file", fileInput.files[0]);
+        }
+
+        try {
+            const response = await fetch(WEBHOOK_URL, {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                status.innerHTML = "<span class='success'>Отчет успешно отправлен в Discord!</span>";
+                document.getElementById('description').value = "";
+                fileInput.value = "";
+            } else {
+                throw new Error();
+            }
+        } catch (e) {
+            status.innerHTML = "<span class='error'>Ошибка отправки. Попробуйте позже.</span>";
+        } finally {
+            btn.disabled = false;
+            spinner.style.display = "none";
+        }
+    }
+</script>
+
 </body>
 </html>
