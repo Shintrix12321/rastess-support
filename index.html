@@ -3,199 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RASTESS | Технический центр</title>
-    <!-- Иконки -->
+    <title>RASTESS | Терминал связи</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            background-color: #050505;
-            background-image: radial-gradient(circle at 50% 50%, #1a1c22 0%, #050505 100%);
-            color: #d1d1d1;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+        /* Стилизация под визуальную новеллу */
+        @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+
+        body, html {
             margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Play', sans-serif;
+            background: #000;
+            color: #d1d1d1;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
         }
 
-        .container {
-            background: rgba(20, 20, 20, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+        /* Атмосферный фон с шумом и туманом */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png'), 
+                        radial-gradient(circle, rgba(26,28,34,0) 0%, rgba(0,0,0,0.9) 100%);
+            z-index: 1;
+        }
+
+        .fog {
+            position: fixed;
+            width: 200%; height: 100%;
+            background: url('https://raw.githubusercontent.com/gist/PavelDoGreat/6748434/raw/2660233481222479e00ec9a4197e44a49646b5a3/fog.png');
+            background-repeat: repeat-x;
+            opacity: 0.1;
+            z-index: 2;
+            animation: drift 60s linear infinite;
+        }
+
+        @keyframes drift {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* Главный контейнер - как окно диалога */
+        .game-window {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 550px;
+            background: rgba(10, 10, 10, 0.85);
+            border: 2px solid rgba(144, 175, 197, 0.3);
+            border-radius: 4px;
             padding: 40px;
-            border-radius: 24px;
-            border: 1px solid rgba(144, 175, 197, 0.15);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-            animation: fadeIn 1s ease-out;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(144, 175, 197, 0.05);
+            backdrop-filter: blur(8px);
+            animation: windowAppear 0.8s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes windowAppear {
+            from { opacity: 0; transform: scale(0.95); filter: blur(10px); }
+            to { opacity: 1; transform: scale(1); filter: blur(0); }
         }
 
         h1 {
+            font-size: 1.8em;
             color: #90afc5;
-            font-size: 2.2em;
-            letter-spacing: 5px;
             text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-top: 0;
             margin-bottom: 30px;
-            font-weight: 300;
+            border-bottom: 1px solid rgba(144, 175, 197, 0.2);
+            padding-bottom: 10px;
+            text-align: left;
         }
 
         .form-group {
-            text-align: left;
             margin-bottom: 20px;
+            text-align: left;
         }
 
         label {
-            display: block;
-            font-size: 0.75em;
-            color: #666;
-            margin-bottom: 8px;
+            font-size: 0.8em;
+            color: #90afc5;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            display: block;
         }
 
         input, textarea {
             width: 100%;
-            padding: 14px;
-            background: rgba(10, 10, 10, 0.5);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid #333;
-            border-radius: 10px;
-            color: #fff;
+            border-radius: 2px;
+            color: #eee;
+            padding: 12px;
+            font-family: 'Play', sans-serif;
             font-size: 1em;
             box-sizing: border-box;
-            outline: none;
             transition: 0.3s;
         }
 
         input:focus, textarea:focus {
+            outline: none;
             border-color: #90afc5;
-            background: rgba(15, 15, 15, 0.8);
+            background: rgba(144, 175, 197, 0.1);
         }
 
-        /* Стиль загрузки файла */
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            width: 100%;
-        }
-
+        /* Стилизация кнопки выбора файла */
         input[type="file"] {
             border: 1px dashed #444;
-            padding: 10px;
+            cursor: pointer;
             font-size: 0.9em;
-            cursor: pointer;
         }
 
-        .btn-send {
+        /* Кнопки меню */
+        .menu-btn {
+            display: block;
             width: 100%;
-            padding: 18px;
-            background: #90afc5;
-            color: #050505;
-            border: none;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 1.1em;
+            padding: 15px;
+            background: none;
+            border: 1px solid rgba(144, 175, 197, 0.4);
+            color: #90afc5;
             text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.4s;
-            margin-top: 10px;
+            transition: all 0.3s;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-send:hover {
-            background: #fff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(144, 175, 197, 0.3);
+        .menu-btn:hover {
+            background: rgba(144, 175, 197, 0.1);
+            color: #fff;
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(144, 175, 197, 0.3);
         }
 
-        .btn-send:disabled {
-            background: #444;
-            cursor: not-allowed;
-            transform: none;
+        .menu-btn:active { transform: scale(0.98); }
+
+        .discord-btn {
+            margin-top: 15px;
+            border: 1px solid rgba(88, 101, 242, 0.4);
+            color: #5865F2;
+            text-decoration: none;
+            display: block;
+            font-size: 0.9em;
+            padding: 10px;
+            text-align: center;
         }
+
+        .discord-btn:hover { color: #fff; border-color: #fff; }
 
         #status {
             margin-top: 20px;
             font-size: 0.9em;
-            min-height: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .success { color: #4ade80; }
+        .success { color: #4ade80; text-shadow: 0 0 10px rgba(74, 222, 128, 0.5); }
         .error { color: #f87171; }
 
-        .discord-link {
-            margin-top: 30px;
-            display: inline-block;
-            color: #5865F2;
-            text-decoration: none;
-            font-size: 0.9em;
-            transition: 0.3s;
-        }
-
-        .discord-link:hover { color: #fff; }
-
-        /* Эффект загрузки */
-        .loading-spinner {
+        /* Лоадер в стиле загрузки игры */
+        .loader {
             display: none;
-            margin: 10px auto;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(144, 175, 197, 0.3);
-            border-radius: 50%;
-            border-top-color: #90afc5;
-            animation: spin 1s ease-in-out infinite;
+            font-size: 0.8em;
+            color: #90afc5;
+            margin-top: 10px;
+            animation: pulse 1s infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 
+            0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Отчет о баге</h1>
-    
-    <div id="reportForm">
-        <div class="form-group">
-            <label>Ваш Ник / Discord</label>
-            <input type="text" id="username" placeholder="Shintrix...">
-        </div>
+    <div class="bg-overlay"></div>
+    <div class="fog"></div>
 
-        <div class="form-group">
-            <label>Описание проблемы</label>
-            <textarea id="description" rows="5" placeholder="Опишите, что пошло не так..."></textarea>
-        </div>
-
-        <div class="form-group">
-            <label>Прикрепить скриншот (необязательно)</label>
-            <input type="file" id="screenshot" accept="image/*">
-        </div>
-
-        <button class="btn-send" id="submitBtn" onclick="sendReport()">
-            Отправить отчет
-        </button>
+    <div class="game-window">
+        <h1>Система репортов</h1>
         
-        <div class="loading-spinner" id="spinner"></div>
-        <div id="status"></div>
-    </div>
+        <div id="reportForm">
+            <div class="form-group">
+                <label>Идентификатор (Ник)</label>
+                <input type="text" id="username" placeholder="Введите имя...">
+            </div>
 
-    <a href="https://discord.gg/jzzcdWeJVD" target="_blank" class="discord-link">
-        <i class="fab fa-discord"></i> Перейти в наш Discord
-    </a>
-</div>
+            <div class="form-group">
+                <label>Данные об ошибке</label>
+                <textarea id="description" rows="5" placeholder="Опишите баг..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Визуальное подтверждение</label>
+                <input type="file" id="screenshot" accept="image/*">
+            </div>
+
+            <button class="menu-btn" id="submitBtn" onclick="sendReport()">
+                > Отправить данные
+            </button>
+            
+            <div class="loader" id="spinner">УСТАНОВКА СОЕДИНЕНИЯ...</div>
+            <div id="status"></div>
+        </div>
+
+        <a href="https://discord.gg/jzzcdWeJVD" target="_blank" class="discord-btn">
+            [ ВОЙТИ В DISCORD ]
+        </a>
+    </div>
 
 <script>
     async function sendReport() {
         const WEBHOOK_URL = "https://discord.com/api/webhooks/1541545132376203285/DoMDk6qcjb4-1qxweF_Z4WnZT8PIXmBxjhdtX4yYh0QHx1KF9q4Lpf6_5eJ0TzfhnKwX";
         
-        const username = document.getElementById('username').value || "Аноним";
+        const username = document.getElementById('username').value || "Неизвестный";
         const description = document.getElementById('description').value;
         const fileInput = document.getElementById('screenshot');
         const status = document.getElementById('status');
@@ -203,27 +231,25 @@
         const spinner = document.getElementById('spinner');
 
         if (!description) {
-            status.innerHTML = "<span class='error'>Пожалуйста, опишите проблему</span>";
+            status.innerHTML = "<span class='error'>> ОШИБКА: ОПИСАНИЕ ПУСТО</span>";
             return;
         }
 
-        // Блокируем кнопку и показываем загрузку
-        btn.disabled = true;
+        btn.style.display = "none";
         spinner.style.display = "block";
         status.innerText = "";
 
         const formData = new FormData();
         
-        // Красивое оформление сообщения для Discord
         const message = {
             embeds: [{
-                title: "🚀 Новый баг-репорт",
-                color: 9482181, // Сизый цвет (#90afc5)
+                title: "📂 НОВЫЙ ЗАПРОС В ТЕХОТДЕЛ",
+                color: 9482181, 
                 fields: [
-                    { name: "Отправитель", value: username, inline: true },
-                    { name: "Сообщение", value: description }
+                    { name: "СУБЪЕКТ", value: username, inline: true },
+                    { name: "ОТЧЕТ", value: "```" + description + "```" }
                 ],
-                footer: { text: "Rastess Technical Support" },
+                footer: { text: "RASTESS DEBUG TERMINAL" },
                 timestamp: new Date()
             }]
         };
@@ -241,16 +267,16 @@
             });
 
             if (response.ok) {
-                status.innerHTML = "<span class='success'>Отчет успешно отправлен в Discord!</span>";
+                status.innerHTML = "<span class='success'>> ДАННЫЕ ПЕРЕДАНЫ УСПЕШНО</span>";
                 document.getElementById('description').value = "";
                 fileInput.value = "";
             } else {
                 throw new Error();
             }
         } catch (e) {
-            status.innerHTML = "<span class='error'>Ошибка отправки. Попробуйте позже.</span>";
+            status.innerHTML = "<span class='error'>> ОШИБКА СЕТИ. ПОВТОРИТЕ ПОПЫТКУ</span>";
         } finally {
-            btn.disabled = false;
+            btn.style.display = "block";
             spinner.style.display = "none";
         }
     }
