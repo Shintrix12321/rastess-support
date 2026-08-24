@@ -25,6 +25,7 @@
             overflow-x: hidden;
         }
 
+        /* --- Анимированный туман --- */
         .fog-layer {
             position: fixed; top: 0; left: 0; width: 200%; height: 100%;
             background: url('https://raw.githubusercontent.com/gist/PavelDoGreat/6748434/raw/2660233481222479e00ec9a4197e44a49646b5a3/fog.png');
@@ -33,7 +34,7 @@
         }
         @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* --- ОСНОВНОЕ МЕНЮ --- */
+        /* --- ОСНОВНОЕ МЕНЮ (КАРТОЧКА) --- */
         .container {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -73,7 +74,7 @@
         }
         .drop-zone:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* --- ГАЛОЧКА --- */
+        /* --- КРАСИВАЯ ГАЛОЧКА --- */
         .safety-wrapper {
             display: flex; align-items: center; cursor: pointer;
             text-align: left; gap: 12px; margin: 20px 0;
@@ -82,10 +83,10 @@
         }
         .safety-wrapper:hover { background: rgba(255, 255, 255, 0.05); }
         .safety-wrapper input { display: none; }
+
         .custom-checkbox {
             width: 22px; height: 22px; border: 2px solid #444;
-            border-radius: 6px; position: relative; flex-shrink: 0;
-            transition: 0.3s;
+            border-radius: 6px; position: relative; flex-shrink: 0; transition: 0.3s;
         }
         .safety-wrapper input:checked + .custom-checkbox {
             background: var(--accent); border-color: var(--accent);
@@ -94,12 +95,12 @@
         .custom-checkbox::after {
             content: "\f00c"; font-family: "Font Awesome 5 Free"; font-weight: 900;
             position: absolute; color: #000; font-size: 14px;
-            top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            transition: 0.2s;
+            top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); transition: 0.2s;
         }
         .safety-wrapper input:checked + .custom-checkbox::after { transform: translate(-50%, -50%) scale(1); }
+        .safety-text { font-size: 0.9em; color: #aaa; user-select: none; line-height: 1.4; }
 
-        /* --- КНОПКА ОТПРАВИТЬ --- */
+        /* --- КНОПКА ОТПРАВИТЬ (БЕЛЫЙ ИНВЕРТ) --- */
         .btn-main {
             width: 100%; padding: 18px;
             background: var(--accent); color: #000;
@@ -115,6 +116,7 @@
         }
         .btn-main:disabled { background: #444; cursor: not-allowed; opacity: 0.6; }
 
+        /* --- КНОПКА DISCORD --- */
         .btn-discord {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             margin-top: 25px; padding: 12px;
@@ -125,55 +127,31 @@
         }
         .btn-discord:hover { background: var(--discord); color: #fff; }
 
-        /* --- СЕКЦИЯ ПЛАТФОРМ (УЛУЧШЕНО) --- */
+        /* --- КНОПКИ ПЛАТФОРМ (СВЕТЛЕЕ И СТАРЫЙ СТИЛЬ) --- */
         .platform-section {
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 50px;
-            z-index: 10;
-            animation: slideUp 1.5s ease-out;
+            text-align: center; margin-top: 10px; margin-bottom: 50px; z-index: 10;
         }
         .platform-title {
-            font-size: 0.75em;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            color: var(--accent);
-            margin-bottom: 15px;
-            opacity: 0.6;
+            font-size: 0.8em; text-transform: uppercase; letter-spacing: 3px;
+            color: #fff; margin-bottom: 15px; opacity: 0.5;
         }
         .platform-footer {
-            display: flex; gap: 15px; justify-content: center;
+            display: flex; gap: 20px; justify-content: center;
         }
         .platform-link {
-            text-decoration: none;
-            color: #fff;
-            font-size: 0.95em;
-            display: flex; align-items: center; gap: 10px;
-            padding: 12px 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(144, 175, 197, 0.4);
-            background: rgba(144, 175, 197, 0.05);
-            transition: all 0.4s;
-            font-weight: 600;
-            letter-spacing: 1px;
+            text-decoration: none; color: #ddd; /* Более светлый текст */
+            font-size: 0.9em; display: flex; align-items: center; gap: 8px;
+            padding: 10px 22px; border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Светлее граница */
+            background: rgba(255, 255, 255, 0.05); /* Светлее фон */
+            transition: 0.4s; text-transform: uppercase; letter-spacing: 1px;
         }
         .platform-link:hover {
-            border-color: #fff;
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            color: #fff; border-color: var(--accent);
+            background: rgba(144, 175, 197, 0.15);
+            transform: translateY(-2px);
         }
-        .platform-link i {
-            color: var(--accent);
-            font-size: 1.3em;
-            transition: 0.4s;
-        }
-        .platform-link:hover i { color: #fff; transform: scale(1.1); }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .platform-link i { font-size: 1.2em; color: var(--accent); }
 
         #status { margin-top: 15px; font-size: 0.9em; font-weight: bold; min-height: 1.2em; }
         .success { color: #4ade80; }
@@ -184,22 +162,23 @@
 
     <div class="fog-layer"></div>
 
+    <!-- КАРТОЧКА МЕНЮ -->
     <div class="container">
         <h1>RASTESS</h1>
         <div class="divider"></div>
         
         <div class="form-group">
-            <label>Никнейм</label>
+            <label>Объект (Ваш ник)</label>
             <input type="text" id="username" placeholder="Введите имя..." maxlength="32">
         </div>
 
         <div class="form-group">
-            <label>Описание ошибки</label>
+            <label>Описание обнаруженной ошибки</label>
             <textarea id="description" rows="4" placeholder="Что произошло в тумане?"></textarea>
         </div>
 
         <div class="form-group">
-            <label>Скриншот</label>
+            <label>Визуальные данные</label>
             <div class="drop-zone" id="drop-zone">
                 <i class="far fa-images" style="font-size: 24px; margin-bottom: 5px;"></i>
                 <span id="file-name">Нажмите или перетащите фото</span>
@@ -210,7 +189,7 @@
         <label class="safety-wrapper" for="safety-confirm">
             <input type="checkbox" id="safety-confirm">
             <div class="custom-checkbox"></div>
-            <div class="safety-text">Я подтверждаю, что вложения не нарушают правила сообщества.</div>
+            <div class="safety-text">Я подтверждаю, что скриншот не содержит запрещенного контента.</div>
         </label>
 
         <button class="btn-main" id="submitBtn" onclick="sendReport()">Отправить</button>
@@ -221,15 +200,15 @@
         </a>
     </div>
 
-    <!-- Обновленная секция платформ -->
+    <!-- ПЛАТФОРМЫ ВНИЗУ -->
     <div class="platform-section">
         <div class="platform-title">Играть на платформах</div>
         <div class="platform-footer">
             <a href="https://shintrix.itch.io/rastess" target="_blank" class="platform-link">
-                <i class="fab fa-itch-io"></i> ITCH.IO
+                <i class="fab fa-itch-io"></i> Itch.io
             </a>
             <a href="https://gamejolt.com/games/rastess/1094649" target="_blank" class="platform-link">
-                <i class="fas fa-gamepad"></i> GAMEJOLT
+                <i class="fas fa-gamepad"></i> GameJolt
             </a>
         </div>
     </div>
@@ -242,6 +221,9 @@
     const btn = document.getElementById('submitBtn');
     const safetyCheck = document.getElementById('safety-confirm');
 
+    // Массив для фильтрации
+    const bannedWords = ["хуй", "пизд", "еба", "ебл", "бля", "сук", "гандон", "мудак", "шлюх", "говно", "жоп", "дроч", "порно", "секс", "пидор", "ниггер", "негр", "хер", "мразь"];
+
     dropZone.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length) fileNameDisplay.textContent = `Выбрано: ${fileInput.files[0].name}`;
@@ -252,6 +234,7 @@
         const username = document.getElementById('username').value.trim() || "Аноним";
         const description = document.getElementById('description').value.trim();
 
+        // Проверка времени (1 мин)
         const lastSent = localStorage.getItem('lastReportSent');
         if (lastSent && (Date.now() - lastSent < 60000)) {
             status.innerHTML = "<span class='error'>Подождите минуту.</span>";
@@ -259,6 +242,13 @@
         }
         if (!description || !safetyCheck.checked) {
             status.innerHTML = "<span class='error'>Заполните поля и подтвердите безопасность!</span>";
+            return;
+        }
+
+        // Фильтр матов
+        const textToCheck = (username + " " + description).toLowerCase();
+        if (bannedWords.some(word => textToCheck.includes(word))) {
+            status.innerHTML = "<span class='error'>Сообщение отклонено системой безопасности.</span>";
             return;
         }
 
@@ -272,7 +262,7 @@
                 color: 9482181,
                 fields: [
                     { name: "ОТПРАВИТЕЛЬ", value: username, inline: true },
-                    { name: "ОПИСАНИЕ", value: "```" + description + "```" }
+                    { name: "ОТЧЕТ", value: "```" + description + "```" }
                 ],
                 timestamp: new Date()
             }]
@@ -284,7 +274,7 @@
         try {
             const response = await fetch(WEBHOOK_URL, { method: "POST", body: formData });
             if (response.ok) {
-                status.innerHTML = "<span class='success'>Данные переданы.</span>";
+                status.innerHTML = "<span class='success'>Отчет доставлен.</span>";
                 localStorage.setItem('lastReportSent', Date.now());
                 document.getElementById('description').value = "";
                 fileInput.value = "";
